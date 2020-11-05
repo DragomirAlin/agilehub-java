@@ -25,8 +25,8 @@ public class Main {
         //homework.printResultOfRandomMethod();
 
         // EX 4
-//        var result = homework.calculateDifference(List.of(8,3,12,5,2,6,5));
-//        System.out.println(result);
+        var result = homework.calculateDifference(List.of(8,3,12,5,2,6,5));
+        System.out.println(result);
 
         // EX 5
 //        ArrayList<String> arrayList = new ArrayList<>();
@@ -52,8 +52,8 @@ public class Main {
 //        System.out.println(typeOfDay);
 
         // EX 8
-        boolean res = homework.checkResult(new Addition(2,2), new Subtraction(6,2));
-        System.out.println(res);
+//        boolean res = homework.checkResultOperation(new Addition(2,2), new Subtraction(6,2));
+//        System.out.println(res);
 
     }
 }

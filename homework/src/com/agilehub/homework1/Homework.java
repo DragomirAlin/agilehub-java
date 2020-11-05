@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Homework {
@@ -31,8 +32,8 @@ public class Homework {
 
     // EX 1
     public void addNewKnowledge(String newThing) {
-        maxExempleWithOf().put(maxExempleWithOf().size() + 1, newThing); // Don`t run because collection is immutable and don`t accept new thing in map
-        mapExemple().put(mapExemple().size() + 1, newThing); // Works, because collection is not immutable
+        maxExempleWithOf().put(maxExempleWithOf().size() + 1, newThing); // Don`t run because collection is immutable and it don`t accept new thing into map
+        mapExemple().put(mapExemple().size() + 1, newThing); // Works, because it is not immutable
 
     }
 
@@ -46,7 +47,7 @@ public class Homework {
     }
 
     // EX 2
-    public void checkRandomOptionalGen() {
+    public void checkRandomOptionalGenerator() {
         randomOptionalGenerator().ifPresentOrElse(System.out::println,
                 () -> {
                     throw new RuntimeException("Value is not found.");
@@ -71,15 +72,23 @@ public class Homework {
 
     // EX 3
     public void printResultOfRandomMethod() {
-        randomOptionalGeneratorTwo().ifPresentOrElse(System.out::println, () -> System.out.println("You`re reached the end of INT"));
+        randomOptionalGeneratorTwo().ifPresentOrElse(System.out::println,
+                () -> System.out.println("You`re reached the end of INT"));
     }
 
 
     // EX 4
     public int calculateDifference(List<Integer> listNumbers) {
-        var max = listNumbers.stream().mapToInt(n -> n).max();
-        var min = listNumbers.stream().mapToInt(n -> n).min();
-        return max.getAsInt() - min.getAsInt();
+//       var max = listNumbers.stream().reduce(0,Integer::max);;
+//       var min = listNumbers.stream().reduce(0,Integer::min);
+//       max.getAsInt() - min;     first idea for solve this ex
+
+        var result = listNumbers.stream().collect(Collectors.teeing(
+                Collectors.reducing(0, Integer::max),
+                Collectors.reducing(0, Integer::min),
+                (max, min) -> max - min
+        ));
+        return result;
     }
 
     // EX 5
@@ -106,29 +115,30 @@ public class Homework {
     // EX 7
     public String getTypeOfDay(String today) {
         enum DaysOfWeek {
-            MONDAY("1"), TUESDAY("2"), WEDNESDAY("3"), THURSDAY("4"), FRIDAY("5"), SATURDAY("6"), SUNDAY("7");
-
-            DaysOfWeek(String i) {
-            }
+            MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
         }
 
+        var work = "Work day";
+        var weekend = "Weekend day";
+
         return switch (DaysOfWeek.valueOf(today)) {
-            case MONDAY -> "Work day";
-            case TUESDAY -> "Work day";
-            case WEDNESDAY -> "Work day";
-            case THURSDAY -> "Work day";
-            case FRIDAY -> "Work day";
-            case SATURDAY -> "Weekend day";
-            case SUNDAY -> "Weekend day";
+            case MONDAY -> work;
+            case TUESDAY -> work;
+            case WEDNESDAY -> work;
+            case THURSDAY -> work;
+            case FRIDAY -> work;
+            case SATURDAY -> weekend;
+            case SUNDAY -> weekend;
 
         };
     }
 
     // EX 8
-    public boolean checkResult(Addition addition, Subtraction subtraction) {
-        int result = addition.calculate(addition.firstNumber(), addition.secondNumber());
-        int result2 = subtraction.calculate(subtraction.firstNumber(), subtraction.secondNumber());
-        return result == result2;
+    public boolean checkResultOperation(Addition addition, Subtraction subtraction) {
+        int resultAdd = addition.calculate(addition.firstNumber(), addition.secondNumber());
+        int resultTra = subtraction.calculate(subtraction.firstNumber(), subtraction.secondNumber());
+        return resultAdd == resultTra;
+
     }
 
 
