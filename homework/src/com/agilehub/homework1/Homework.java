@@ -48,11 +48,7 @@ public class Homework {
 
     // EX 2
     public void checkRandomOptionalGenerator() {
-        randomOptionalGenerator().ifPresentOrElse(System.out::println,
-                () -> {
-                    throw new RuntimeException("Value is not found.");
-                }
-        );
+        randomOptionalGenerator().orElseThrow();
     }
 
     public int getRandomNumber() {
@@ -103,13 +99,14 @@ public class Homework {
     }
 
     // EX 6
-    public String generateViewTemplate(Map<String, String> context) throws IOException {
-        Jinjava jinjava = new Jinjava();
-        String template = Resources.toString(Resources.getResource("index.html"), Charsets.UTF_8);
+    public String generateViewTemplate(Map<String, String> context) {
+        String name = context.get("name");
+        String greeting = context.get("greeting");
+        String template = """
+                        Hello name, gretting!
+                        """;
 
-        String renderedTemplate = jinjava.render(template, context);
-        return renderedTemplate;
-
+        return template.replace("name", name).replace("gretting", greeting);
     }
 
     // EX 7
@@ -122,22 +119,20 @@ public class Homework {
         var weekend = "Weekend day";
 
         return switch (DaysOfWeek.valueOf(today)) {
-            case MONDAY -> work;
-            case TUESDAY -> work;
-            case WEDNESDAY -> work;
-            case THURSDAY -> work;
-            case FRIDAY -> work;
-            case SATURDAY -> weekend;
-            case SUNDAY -> weekend;
+            case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> work;
+            case SATURDAY, SUNDAY -> weekend;
 
         };
     }
 
     // EX 8
-    public boolean checkResultOperation(Addition addition, Subtraction subtraction) {
-        int resultAdd = addition.calculate(addition.firstNumber(), addition.secondNumber());
-        int resultTra = subtraction.calculate(subtraction.firstNumber(), subtraction.secondNumber());
+    public boolean checkResultOperation() {
+        Addition addition = new Addition(2, 3);
+        Subtraction subtraction = new Subtraction(7, 2);
+        int resultAdd = addition.calculate();
+        int resultTra = subtraction.calculate();
         return resultAdd == resultTra;
+
 
     }
 
