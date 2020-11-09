@@ -1,12 +1,5 @@
 package com.agilehub.homework1;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Resources;
-import com.hubspot.jinjava.Jinjava;
-
-import java.io.IOException;
-
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,12 +72,12 @@ public class Homework {
 //       var min = listNumbers.stream().reduce(0,Integer::min);
 //       max.getAsInt() - min;     first idea for solve this ex
 
-        var result = listNumbers.stream().collect(Collectors.teeing(
-                Collectors.reducing(0, Integer::max),
-                Collectors.reducing(0, Integer::min),
-                (max, min) -> max - min
+        return listNumbers.stream().collect(Collectors.teeing(
+                Collectors.reducing(Integer::max),
+                Collectors.reducing(Integer::min),
+                (max, min) -> max.get() - min.get()
+
         ));
-        return result;
     }
 
     // EX 5
