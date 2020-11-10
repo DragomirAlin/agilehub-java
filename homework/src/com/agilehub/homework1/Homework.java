@@ -47,31 +47,16 @@ public class Homework {
     public int getRandomNumber() {
         return random.nextInt(5);
     }
-
-    // EX 3
-    public Optional<?> randomOptionalGeneratorTwo() {
-        var randomNumber = getRandomNumber();
-        return switch (randomNumber) {
-            case 1 -> Optional.of(1);
-            case 2 -> Optional.of(2);
-            case 3 -> Optional.of("ups");
-            default -> Optional.empty();
-        };
-    }
-
+    
     // EX 3
     public void printResultOfRandomMethod() {
-        randomOptionalGeneratorTwo().ifPresentOrElse(System.out::println,
+        randomOptionalGenerator().ifPresentOrElse(System.out::println,
                 () -> System.out.println("You`re reached the end of INT"));
     }
 
 
     // EX 4
     public int calculateDifference(List<Integer> listNumbers) {
-//       var max = listNumbers.stream().reduce(0,Integer::max);;
-//       var min = listNumbers.stream().reduce(0,Integer::min);
-//       max.getAsInt() - min;     first idea for solve this ex
-
         return listNumbers.stream().collect(Collectors.teeing(
                 Collectors.reducing(Integer::max),
                 Collectors.reducing(Integer::min),
@@ -93,13 +78,17 @@ public class Homework {
 
     // EX 6
     public String generateViewTemplate(Map<String, String> context) {
-        String name = context.get("name");
-        String greeting = context.get("greeting");
         String template = """
-                        Hello name, gretting!
-                        """;
+                <html>
+                <body>
+                                        
+                    <div> Hello ${name}, ${gretting}! </div>
+                                        
+                </body>
+                </html>
+                """;
 
-        return template.replace("name", name).replace("gretting", greeting);
+        return template.replace("name", context.get("name")).replace("gretting", context.get("greeting"));
     }
 
     // EX 7
@@ -122,11 +111,17 @@ public class Homework {
     public boolean checkResultOperation() {
         Addition addition = new Addition(2, 3);
         Subtraction subtraction = new Subtraction(7, 2);
+        Addition addition2 = new Addition(3, 6);
+
         int resultAdd = addition.calculate();
         int resultTra = subtraction.calculate();
+
+        System.out.println("Check operands " + checkOperands(subtraction, subtraction));
         return resultAdd == resultTra;
+    }
 
-
+    public boolean checkOperands(MathematicalOperation math, MathematicalOperation math2) {
+        return math instanceof Addition && math2 instanceof Addition || math instanceof Subtraction && math2 instanceof Subtraction;
     }
 
 
