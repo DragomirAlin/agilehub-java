@@ -4,11 +4,10 @@ public class MyPresentation {
     private NameStrategy nameStrategy;
 
     public void setNameStrategy(NameStrategy nameStrategy) {
-        if(nameStrategy instanceof NameStrategy){
-            this.nameStrategy = nameStrategy;
-        }else {
-            System.out.println("Not a valid strategy");
+        if(!(nameStrategy instanceof NameStrategy)){
+            throw new RuntimeException("Strategy not found");
         }
+        this.nameStrategy = nameStrategy;
     }
 
     public void myNameIs(String firstName, String lastName){
